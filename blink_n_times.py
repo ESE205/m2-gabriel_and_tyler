@@ -1,31 +1,24 @@
-import RPi.GPIO as GPIO
-from time import sleep
-import sys
+import RPi.GPIO as GPIO    # Import Raspberry Pi GPIO library
+from time import sleep     # Import the sleep from time module
+GPIO.setwarnings(False)    # Ignore warning for now
+GPIO.setmode(GPIO.BOARD)   # Use physical pin numbering
 
-GPIO.setwarnings(False)
-GPIO.setmode(GPIO.BOARD)
+blinkNum  = input("Enter the number of blinks:");
 
-pin1 = 11
+blinkNum = int(blinkNum);
 
-GPIO.setup(pin1, GPIO.OUT, initial=GPIO.LOW)
+if(blinkNum==0):
+   blinkNum=5;
+   
+ITER_COUNT = blinkNum;  
+pin1 = 16
 
-if len(sys.argv) > 1:
-    try:
-        n = int(sys.argv[1])
-    except ValueError:
-        print("Invalid input for 'n'. Please provide an integer.")
-        sys.exit(1)
-else:
-    n = 5
+GPIO.setup(pin1, GPIO.OUT, initial=GPIO.LOW)   
 
-ITER_COUNT = n * 2  # Two iterations per blink
-
-while ITER_COUNT > 0:
-    ITER_COUNT -= 1
-    GPIO.output(pin1, GPIO.HIGH)
-    sleep(1)
-    GPIO.output(pin1, GPIO.LOW)
-    sleep(1)
-
+while ITER_COUNT > 0: # Run ITER_COUNT times
+   ITER_COUNT -= 1 # Decrement counter
+   GPIO.output(pin1, GPIO.HIGH) # Turn on
+   sleep(1)                     # Sleep for 1 second
+   GPIO.output(pin1, GPIO.LOW)  # Turn off
+   sleep(1)                     # Sleep for 1 second
 GPIO.cleanup()
-
